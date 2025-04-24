@@ -1,0 +1,198 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUN Club Timeline April 2025 - April 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Arial', sans-serif;
+        }
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #1e40af;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #1e40af;
+            border: 4px solid #ffffff;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-item:nth-child(odd)::before {
+            right: -10px;
+        }
+        .timeline-item:nth-child(even)::before {
+            left: -10px;
+        }
+        .timeline-content {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .timeline-content h3 {
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto py-10">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">MUN Club Timeline: April 2025 - April 2026</h1>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">April 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Kick off with an introductory meeting.</p>
+                    <p class="text-gray-600"><strong>Events/Conferences:</strong> ASIJMUN (ASIJ, Chofu), WJMUN (Fukuoka International School).</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">May 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Conduct MUN 101 workshop on rules, resolutions, and speaking. Train on research and position papers.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">June 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Train on research and position papers. Organize a MUN training session featuring Mr. Huang.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">July 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Host the year's first HGMUN Conference at Hiroo Gakuen.</p>
+                    <p class="text-gray-600"><strong>Events/Conferences:</strong> JEMUN (Kindai University, Osaka).</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">August 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Do online workshops/meetings or assign research assignments during summer break. Decide Keyaki Conference Topic, and assign country roles. Host public speaking workshop. Start planning and preparing for Cross-school MUN Conference in December.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">September 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Intensify conference prep with practice debates and preparation sessions.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">October 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Host the Keyaki MUN Conference during the Keyaki Festival.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">November 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Finalize plans for Cross-school MUN Conference. Everyone's chill :)</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">December 2025</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Host a Cross-School MUN Conference during winter break. Hosting a holiday-themed MUN social might be fun.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">January 2026</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Advanced training with Mr. Huang. Prepare for spring conferences. Elect new leadership for next academic year.</p>
+                    <p class="text-gray-600"><strong>Events/Conferences:</strong> JEIMUN (National Olympics Memorial Youth Center, Shibuya).</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">February 2026</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Plan end-of-year celebrations for the club.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">March 2026</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Host the second HGMUN Conference at Hiroo Gakuen. Final internal MUN meeting, and conduct a feedback session to improve future events. Begin planning what to do for next academic year's MUN activities.</p>
+                    <p class="text-gray-600"><strong>Events/Conferences:</strong> JMMUN (Senzoku Gakuen).</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3 class="text-2xl font-semibold mb-2">April 2026</h3>
+                    <p class="text-gray-600"><strong>Activities:</strong> Start of new academic year. Advertise MUN Club through gmail and by going to classes during HR. Kick off with an introductory meeting.</p>
+                    <p class="text-gray-600"><strong>Events/Conferences:</strong> ASIJMUN (ASIJ, Chofu), WJMUN (Fukuoka International School).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
